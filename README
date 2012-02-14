@@ -21,7 +21,7 @@ INSTALLED_APPS += (
     'dajaxice',
     'dajax',
     ...
-    'django-ajax-shop',
+    'e_commerce',
     ...
 )
 
