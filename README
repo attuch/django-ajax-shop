@@ -1,4 +1,7 @@
 django-ajax-shop is a little and fast reusable shop application ajax based.
+This application is to be understood as a base, not to be used as it is.
+The files that need to be changed are ajax.py and templates/first.html.
+The template inherit a file called base.html, which must have a {% block content%} {% endblock%}
 
 Requirements:
 
@@ -32,6 +35,10 @@ PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 ##############################
 in urls.py:
 
+from dajaxice.core import dajaxice_autodiscover
+dajaxice_autodiscover()
+
+urlpatterns = ...
 ...
     (r'^', include('e_commerce.urls')),
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
