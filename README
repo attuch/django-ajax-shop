@@ -1,0 +1,40 @@
+django-ajax-shop is a little and fast reusable shop application ajax based.
+
+Requirements:
+
+django-dajax
+django-dajaxice
+
+
+Configuration:
+
+in settings.py:
+
+optionals:
+SESSION_COOKIE_AGE = 3600
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+required:  #for the cart objects
+SESSION_SAVE_EVERY_REQUEST = True
+
+INSTALLED_APPS += (
+    'dajaxice',
+    'dajax',
+    ...
+    'django-ajax-shop',
+    ...
+)
+
+DAJAXICE_MEDIA_PREFIX="dajaxice"
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
+
+
+##############################
+in urls.py:
+
+...
+    (r'^', include('e_commerce.urls')),
+    (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
+...
+
+
