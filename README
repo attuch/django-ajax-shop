@@ -3,6 +3,15 @@ This application is to be understood as a base, not to be used as it is.
 The files that need to be changed are ajax.py and templates/first.html.
 The template inherit a file called base.html, which must have a {% block content%} {% endblock%}
 
+View an example on: http://acquista.dolcericordo.it
+
+Functionality:
+_ management product in admin with thumbnails and put in the foreground;
+_ discounts for selected products with automatic price;
+_ very fast ajax interface;
+_ managing user friendly shopping cart;
+_ proof of payment via paypal.
+
 Requirements:
 
 django >= 1.3
@@ -45,6 +54,12 @@ urlpatterns = ...
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 ...
 
+
 In the bottom of ajax.py there is a draft using paypal; is not necessary, but it is only an idea of a method of payment.
 
 As a method of research of products were used tags, but it is not to exclude a new type of model for various types: sizes, sex, brand etc...
+
+#TODO
+_ greater configurability;
+_ other models to select objects;
+_ example site.
