@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load dajaxice_templatetags markup %}
+
+{% block extra-head %}
+{% dajaxice_js_import %}
+<script type="text/javascript" src="{{MEDIA_URL}}js/jquery-1.4.4.min.js" ></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.dajax.core.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#sponsor').hide();
+    Dajaxice.e_commerce.primopiano(Dajax.process);
+    Dajaxice.e_commerce.productcategories(Dajax.process);
+    Dajaxice.e_commerce.showcart(Dajax.process);
+    Dajaxice.e_commerce.clearoldcart(Dajax.process);
+});
+</script>
+
+<script type="text/javascript">
+function categoryfilter(val) {
+    Dajaxice.e_commerce.filtercat(Dajax.process, {'option': val });
+};
+</script>
+
+<script type="text/javascript">
+function addcart(obj, num) {
+    Dajaxice.e_commerce.addcart(Dajax.process, {'obj': obj , 'num': num});
+};
+</script>
+
+<script type="text/javascript">
+function showcart() { 
+    Dajaxice.e_commerce.showcart(Dajax.process); 
+};
+</script>
+
+<script type="text/javascript">
+function onsale() { 
+    Dajaxice.e_commerce.onsale(Dajax.process); 
+};
+</script>
+
+<script type="text/javascript">
+function proseguipagamento() { 
+    Dajaxice.e_commerce.paga(Dajax.process); 
+};
+</script>
+
+
+<script type="text/javascript">
+function emptycart() { 
+    var tit = $('#titolo').text();
+    var val = "False";
+    if(tit == "Acquista Prodotti"){ 
+	val = "True"; 
+	}
+    Dajaxice.e_commerce.emptycart(Dajax.process, {'val' : val}); 
+};
+</script>
+
+<script type="text/javascript">
+function acquista() {
+    Dajaxice.e_commerce.acquista(Dajax.process); 
+};
+</script>
+
+<script type="text/javascript">
+function rimuovi(val) {
+    Dajaxice.e_commerce.rimuovi(Dajax.process, {'objid': val }); 
+};
+</script>
+
+<script type="text/javascript">
+function proseguipagamento() {
+    Dajaxice.e_commerce.paga(Dajax.process, {'full_name': $('#full_name').val(), 'city': $('#city').val(), 'address': $('#address').val(), 'cap': $('#cap').val(), 'email': $('#email').val(), 'phone': $('#phone').val() }); 
+};
+</script>
+
+
+<script type="text/javascript">
+function allarga(val) { 
+    $('#sponsor').attr("src",val);
+    $('#sponsor').show();
+};
+</script>
+{% endblock %}
+
+{% block content %}
+<div style="margin:auto;" id="navigazione"><marquee direction="left" scrollamount="4" onmouseover="this.setAttribute('scrollamount', 1, 0);" onmouseout="this.setAttribute('scrollamount', 4, 0);"><p class="category-but"><a href="/">Primo Piano</a>&nbsp;&nbsp;&nbsp;&nbsp;---&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:onsale();">Pezzi Scontati</a></p></marquee></div>
+<div style="margin:auto;" id="titolo"></div>
+<br/>
+<table width="100%">
+<tr>
+	<td width="60%"><div id="elenco"></div></td>
+	<td valign="top" width="40%"><div id="productcategories"></div><br/><div id="cartover"><div id="cart"></div><p class="category-but"><span onclick="javascript:showcart();">Aggiorna Carrello</span></p><p class="category-but"><span onclick="javascript:emptycart();">Svuota Carrello</span></p><p class="category-but"><span onclick="acquista();">Acquista</span></p></div></td>
+</tr>
+</table>
+<img onclick="javascript:$('#sponsor').hide(); " style="padding:2em; position:absolute; top:0.01em; margin:5% 20%; width:600px; z-index:5;" id="sponsor" />
+{% endblock %}
