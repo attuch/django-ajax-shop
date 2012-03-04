@@ -26,6 +26,10 @@ def purchased(request, cartid):
                 purchase = PurchaseCart.objects.get(cart=Cart.objects.get(id=cartid))
                 purchase.tx = tx
                 purchase.save()
+                cart=Cart.objects.get(id=cartid)
+                cart.payed=True
+                cart.save()
+                logging.error("INVIO DI VARIE MAIL E BASTA!!!!")
                 to_template = 'Transazione %s avvenuta correttamente' % (tx)
             else:
                 to_template = 'Riscontrati problemi nel corso della transazione %s' % (tx)

@@ -1,4 +1,5 @@
 from django.db import models
+#from sorl.thumbnail import ImageField
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.sessions.models import Session
 from datetime import datetime
@@ -57,6 +58,8 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag, help_text=_('Tags that describe this product'), blank=True)
     image = models.ImageField(upload_to='e_commerce/')
     price = models.FloatField(max_length=300)
+    number = models.IntegerField(max_length=50)
+    date_disponibility = models.DateField()
     primo_piano = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
@@ -68,14 +71,21 @@ class Product(models.Model):
             this = Product.objects.get(id=self.id)
             if this.image != self.image:
                 this.image.delete()
+                #logging.error("elimino directory")
                 shutil.rmtree(d)
+                #logging.error("creo directory")
                 os.makedirs(d)
         except: pass
         super(Product, self).save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        self.image.delete()
+        super(Product, self).delete(*args, **kwargs)
+
     def thumb(self):
         d = PROJECT_PATH + "/media/e_commerce/tiny"
         if not os.path.exists(d):
+            #logging.error("creo directory")
             os.makedirs(d)
         tinythumb = self.image.url.replace('\\','/').split('/')
 	tinythumb[-1] = 'tiny/'+tinythumb[-1]

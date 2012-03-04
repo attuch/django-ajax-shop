@@ -24,14 +24,17 @@ class TagAdmin(admin.ModelAdmin):
     article_count.short_description = _('Applied To')
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name','description','price','primo_piano','thumb')
-    list_editable = ('price','primo_piano')
+    list_display = ('name','description','price','date_disponibility','primo_piano','number','thumb')
+    list_editable = ('price','primo_piano','number','date_disponibility','description')
     inlines = [DiscountInline]
 
     def preview(self, obj):
         image = "<img src='%s' />" % obj.image.url
         return mark_safe(image)
     preview.short_description = _('Thumbnail')
+
+#class CartObjInline(admin.TabularInline):
+    #model = Cart.product.through
 
 class CartAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
