@@ -25,7 +25,7 @@ def creaselect(name,number,date,addcart):
             i = i+1
         out += '</select>'
     else:
-        out = "<em>Il prodotto sara' disponibile in data %s, per contattare il venditore clicca <a id='mailto' href='mailto:%s'>qui</a></em>" % (date,settings.PAYPAL_EMAIL)
+        out = "<p id='cart-contents'><em>Il prodotto sara' disponibile in data %s, per contattare il venditore clicca <a id='mailto' href='mailto:%s'>qui</a></em></p>" % (date,settings.PAYPAL_EMAIL)
     return out
 
 @dajaxice_register
