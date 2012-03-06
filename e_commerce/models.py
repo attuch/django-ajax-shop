@@ -158,3 +158,16 @@ class Discount(models.Model):
 
     def __unicode__(self):
         return str(self.discount)
+
+class FinalCartPayed(models.Model):
+    descrizione = models.TextField(max_length="1000") # il resoconto di un acquisto terminato da parte di un utente, da fare una save() nel Cart al momento in cui payed = True
+    data = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["data"]
+        verbose_name = 'Descrizione Acquisto'
+        verbose_name_plural = 'Descrizione Acquisti'
+
+    def __unicode__(self):
+        return str(self.descrizione)
+
