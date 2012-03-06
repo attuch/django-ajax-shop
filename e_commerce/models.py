@@ -134,6 +134,14 @@ class Cart(models.Model):
     def __unicode__(self):
         return self.session.session_key
 
+    def save(self, *args, **kwargs):
+        super(Cart, self).save(*args, **kwargs)
+        if self.payed:
+            final = FinalCartPayed()
+            purchase = PurchaseCart.objects.get(cart=self)
+            final.descrizione = purchase.full_name + " " + purchase.address + " " + purchase.cap + " " + purchase.email + " " + purchase.phone + "\n" + purchase.tx + "\n" # + self.product.objects.all() #TODO BETTER!!!
+            final.save()
+
 class PurchaseCart(models.Model):
     cart = models.ForeignKey(Cart)
     tx = models.CharField(max_length=125, blank=True, null=True)
