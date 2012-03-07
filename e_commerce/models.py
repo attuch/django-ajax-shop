@@ -135,32 +135,27 @@ class Cart(models.Model):
         return self.session.session_key
 
     def save(self, *args, **kwargs):
-        super(Cart, self).save(*args, **kwargs)
-        if self.payed:
-            final = FinalCartPayed()
-            purchase = PurchaseCart.objects.get(cart=self)
-            out = ""
-            for x in self.product.all():
-                out += x.product.name + " X" + str(x.num) + "\n"
-            final.descrizione = purchase.full_name + "\n" + purchase.city + " " + purchase.address + " " + purchase.cap + "\n" + purchase.email + "\n" + purchase.phone + "\n" + purchase.tx + "\n" + out
-            final.save()
-
-
-"""
-def post_save_final(sender, **kwargs):
-    if kwargs['instance'].payed:
-	logging.error("si pagato.. TODO Eliminare Carrello ormai da non usare piu, magari tramite la funzione di paypal, dopo aver salvato oppure studiando bene la connect post_save ;)")
-        RemoveCart(kwargs['instance'].id)
-    else:
-	logging.error("non ancora pagato")
-
-post_save.connect(post_save_final, sender=Cart)
-
-def RemoveCart(idref):
-    ident = int(idref)
-    logging.error("in RemoveCart id %s", idref)
-    Cart.objects.get(id=ident).delete()
-"""
+        vat = super(Cart, self).save(*args, **kwargs)
+        try:
+            if self.payed:
+                logging.error("Check Payed True")
+                final = FinalCartPayed()
+                purchase = PurchaseCart.objects.get(cart=self)
+                out = ""
+                for x in self.product.all():
+                    out += x.product.name + " X" + str(x.num) + "\n"
+                final.descrizione = purchase.full_name + "\n" + purchase.city + " " + purchase.address + " " + purchase.cap + "\n" + purchase.email + "\n" + purchase.phone + "\n" + purchase.tx + "\n" + out
+                final.save()
+                for x in self.product.all():
+                    x.delete()
+                    logging.error("Deleted CartObj %s", x)
+                self.payed = False
+                self.save()
+	    else:
+                logging.error("Not Checked Payed")
+            return vat
+        except Exception, e:
+            logging.error("Exc in saving Cart %s", e)
 
 class PurchaseCart(models.Model):
     cart = models.ForeignKey(Cart)

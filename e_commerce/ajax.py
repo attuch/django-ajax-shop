@@ -284,18 +284,34 @@ def acquista(request):
 	    except:
   		cost = i.product.price * i.num
 	    totcost += cost
+            try:
+                purchasecart = PurchaseCart.objects.get(cart=session_cart[0])
+                if purchasecart:
+		    nome_completo = purchasecart.full_name
+		    city = purchasecart.city
+		    address = purchasecart.address
+		    cap = purchasecart.cap
+		    email = purchasecart.email
+		    phone = purchasecart.phone
+	    except:
+		nome_completo = ""
+		city = ""
+		address = ""
+		cap = ""
+		email = ""
+		phone = ""
             rimuovi = '"%s"' % str(i.id)
             out += "<table><tr><td width='100px'><p><img width='100px' src='%s'></p></td><td width='300px'><p align='center' id='cart-contents'>%s x%s &euro; %s</p></td><td width='100px'><p align='center'><img class='category-but' style='width:15px;' src='/media/img/X.png' onclick='javascript:rimuovi(%s)'></p></td></tr></table>" % (i.product.image.url,i.product,i.num,cost,rimuovi)
         out += "<p align='center' id='cart-contents'>Totale %s &euro;</p>" % totcost
         out += "<br/>"
         out += "<div id='errori-form'></div>"
         out += "<table>"
-	out += "<tr><td class='title-payment'><label>   Nome Completo</label></td><td><input type='text' id='full_name'/></td></tr>"
-	out += "<tr><td class='title-payment'><label>   Citt&agrave;</label></td><td><input type='text' id='city'/></td></tr>"
-	out += "<tr><td class='title-payment'><label>   Indirizzo</label></td><td><input type='text' id='address'/></td></tr>"
-	out += "<tr><td class='title-payment'><label>   CAP</label></td><td><input type='text' id='cap'/></td></tr>"
-	out += "<tr><td class='title-payment'><label>   Email</label></td><td><input type='text' id='email'/></td></tr>"
-	out += "<tr><td class='title-payment'><label>   Recapito Telefonico</label></td><td><input type='text' id='phone'/></td></tr>"
+	out += "<tr><td class='title-payment'><label>   Nome Completo</label></td><td><input type='text' id='full_name' value='%s'/></td></tr>" % nome_completo
+	out += "<tr><td class='title-payment'><label>   Citt&agrave;</label></td><td><input type='text' id='city' value='%s'/></td></tr>" % city
+	out += "<tr><td class='title-payment'><label>   Indirizzo</label></td><td><input type='text' id='address' value='%s'/></td></tr>" % address
+	out += "<tr><td class='title-payment'><label>   CAP</label></td><td><input type='text' id='cap' value='%s'/></td></tr>" % cap
+	out += "<tr><td class='title-payment'><label>   Email</label></td><td><input type='text' id='email' value='%s'/></td></tr>" % email
+	out += "<tr><td class='title-payment'><label>   Recapito Telefonico</label></td><td><input type='text' id='phone' value='%s'/></td></tr>" % phone
         out += "</table>"
         out += "<br/>"
         out += "<p align='center' class='category-but'><span class='category-but' onclick='proseguipagamento()'>Procedi con il Pagamento</span></p>"
