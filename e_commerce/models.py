@@ -135,24 +135,32 @@ class Cart(models.Model):
         return self.session.session_key
 
     def save(self, *args, **kwargs):
+        super(Cart, self).save(*args, **kwargs)
         if self.payed:
             final = FinalCartPayed()
             purchase = PurchaseCart.objects.get(cart=self)
             out = ""
             for x in self.product.all():
                 out += x.product.name + " X" + str(x.num) + "\n"
-            final.descrizione = purchase.full_name + " " + purchase.address + " " + purchase.cap + " " + purchase.email + " " + purchase.phone + "\n" + purchase.tx + "\n" + out
+            final.descrizione = purchase.full_name + "\n" + purchase.city + " " + purchase.address + " " + purchase.cap + "\n" + purchase.email + "\n" + purchase.phone + "\n" + purchase.tx + "\n" + out
             final.save()
-        super(Cart, self).save(*args, **kwargs)
 
+
+"""
 def post_save_final(sender, **kwargs):
     if kwargs['instance'].payed:
-	logging.error("si pagato.. TODO Eliminare Carrello ormai da non usare piu, magari tramite la funzione di paypa, dopo aver salvato ;)")
+	logging.error("si pagato.. TODO Eliminare Carrello ormai da non usare piu, magari tramite la funzione di paypal, dopo aver salvato oppure studiando bene la connect post_save ;)")
+        RemoveCart(kwargs['instance'].id)
     else:
 	logging.error("non ancora pagato")
-	
 
 post_save.connect(post_save_final, sender=Cart)
+
+def RemoveCart(idref):
+    ident = int(idref)
+    logging.error("in RemoveCart id %s", idref)
+    Cart.objects.get(id=ident).delete()
+"""
 
 class PurchaseCart(models.Model):
     cart = models.ForeignKey(Cart)
@@ -189,5 +197,5 @@ class FinalCartPayed(models.Model):
         verbose_name_plural = 'Descrizione Acquisti'
 
     def __unicode__(self):
-        return str(self.descrizione)
+        return self.descrizione
 
