@@ -31,6 +31,7 @@ def purchased(request, cartid):
                 cart.save()
                 logging.error("INVIO DI VARIE MAIL E BASTA!!!!")
                 to_template = 'Transazione %s avvenuta correttamente' % (tx)
+                cart.delete() #Eliminare carrello dopo aver salvato nel FInal i valori
             else:
                 to_template = 'Riscontrati problemi nel corso della transazione %s' % (tx)
         except Exception, e:

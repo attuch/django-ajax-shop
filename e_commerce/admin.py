@@ -53,10 +53,14 @@ class DiscountAdmin(admin.ModelAdmin):
     list_display = ('id','discount','product')
     list_editable = ['discount','product']
 
+class FinalCartPayedAdmin(admin.ModelAdmin):
+    list_display = ('id','descrizione','data')
+
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Cart, CartAdmin)
 admin.site.register(CartObj, CartObjAdmin)
 admin.site.register(Discount, DiscountAdmin)
+admin.site.register(FinalCartPayed, FinalCartPayedAdmin)
 
 

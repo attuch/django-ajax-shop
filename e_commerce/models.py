@@ -1,7 +1,7 @@
 from django.db import models
-#from sorl.thumbnail import ImageField
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.sessions.models import Session
+from django.db.models.signals import post_init, post_save
 from datetime import datetime
 import logging, re, urllib, os, shutil
 from django.conf import settings
@@ -135,12 +135,24 @@ class Cart(models.Model):
         return self.session.session_key
 
     def save(self, *args, **kwargs):
-        super(Cart, self).save(*args, **kwargs)
         if self.payed:
             final = FinalCartPayed()
             purchase = PurchaseCart.objects.get(cart=self)
-            final.descrizione = purchase.full_name + " " + purchase.address + " " + purchase.cap + " " + purchase.email + " " + purchase.phone + "\n" + purchase.tx + "\n" # + self.product.objects.all() #TODO BETTER!!!
+            out = ""
+            for x in self.product.all():
+                out += x.product.name + " X" + str(x.num) + "\n"
+            final.descrizione = purchase.full_name + " " + purchase.address + " " + purchase.cap + " " + purchase.email + " " + purchase.phone + "\n" + purchase.tx + "\n" + out
             final.save()
+        super(Cart, self).save(*args, **kwargs)
+
+def post_save_final(sender, **kwargs):
+    if kwargs['instance'].payed:
+	logging.error("si pagato.. TODO Eliminare Carrello ormai da non usare piu, magari tramite la funzione di paypa, dopo aver salvato ;)")
+    else:
+	logging.error("non ancora pagato")
+	
+
+post_save.connect(post_save_final, sender=Cart)
 
 class PurchaseCart(models.Model):
     cart = models.ForeignKey(Cart)
