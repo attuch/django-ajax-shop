@@ -66,7 +66,7 @@ def productcategories(request):
         if num > 7: num = 7
         #logging.error(num)
         #logging.error(i)
-        out += '<p class="category tag%s"><span onclick="javascript:categoryfilter(%s);">%s</span></p>' % (str(num), var, i.name)
+        out += '<span class="category tag%s" onclick="javascript:categoryfilter(%s);">%s</span>&nbsp;&nbsp;' % (str(num), var, i.name)
     dajax.assign('#productcategories','innerHTML',out)
     return dajax.json()
 
