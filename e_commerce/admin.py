@@ -16,6 +16,10 @@ class DiscountInline(admin.TabularInline):
     model = Discount
     max_num = 1
 
+class IvaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'iva_value')
+    list_editable = ('iva_value',)
+
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'article_count')
 
@@ -61,6 +65,7 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(Cart, CartAdmin)
 admin.site.register(CartObj, CartObjAdmin)
 admin.site.register(Discount, DiscountAdmin)
+admin.site.register(IVA, IvaAdmin)
 admin.site.register(FinalCartPayed, FinalCartPayedAdmin)
 
 

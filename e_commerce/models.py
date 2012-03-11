@@ -170,6 +170,17 @@ class PurchaseCart(models.Model):
     def __unicode__(self):
         return str(self.id) + " " + "---" + " " + self.full_name + " " + "---" + " " + self.cart.session.session_key
 
+class IVA(models.Model):
+    iva_value = models.FloatField(max_length=100, help_text=_('This percentage to be applied to total'))
+
+    class Meta:
+        ordering = ["iva_value"]
+        verbose_name = 'IVA'
+        verbose_name_plural = 'IVA'
+
+    def __unicode__(self):
+        return str(self.iva_value)
+
 class Discount(models.Model):
     discount = models.FloatField(max_length=100, help_text=_('This percentage to be applied to products or to tag'))
     product = models.ForeignKey(Product, blank=True, null=True)

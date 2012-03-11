@@ -304,6 +304,14 @@ def acquista(request):
             out += "<table><tr><td width='100px'><p><img width='100px' src='%s'></p></td><td width='300px'><p align='center' id='cart-contents'>%s x%s &euro; %s</p></td><td width='100px'><p align='center'><img class='category-but' style='width:15px;' src='/media/img/X.png' onclick='javascript:rimuovi(%s)'></p></td></tr></table>" % (i.product.image.url,i.product,i.num,cost,rimuovi)
         out += "<p align='center' id='cart-contents'>Totale %s &euro;</p>" % totcost
         out += "<br/>"
+        try:
+ 	    iva = IVA.objects.all()[0].iva_value
+            totcost_iva = totcost + totcost*float(iva)/100
+            out += "<p align='center' id='cart-contents'>Totale + Iva (%s%s) %s &euro;</p>" % (iva,'%',totcost_iva)
+            out += "<br/>"
+        except Exception, e:
+	    logging.error("No iva_value found %s", e)
+        out += "<br/>"
         out += "<div id='errori-form'></div>"
         out += "<table>"
 	out += "<tr><td class='title-payment'><label>   Nome Completo</label></td><td><input type='text' id='full_name' value='%s'/></td></tr>" % nome_completo
@@ -383,6 +391,11 @@ def paga(request, full_name, city, address, cap, email, phone):
             except:
                 cost = i.product.price * i.num
             totcost += cost
+        try:
+            iva = IVA.objects.all()[0].iva_value
+            totcost += totcost*float(iva)/100
+        except Exception, e:
+            logging.error("No iva_value found in pay %s", e)
         out = "<p align='center' id='cart-contents'>Clicca sul link sottostante</p>"
         out += "<br/>"
         out += '<table id="paypal-button"><tr><td align="center">'
@@ -400,3 +413,4 @@ def paga(request, full_name, city, address, cap, email, phone):
         out += '<small align="justify"><em>Dopo aver effettuato il bonifico (tramite qualunque tipologia di pagamento), il sistema PayPal fornir&agrave; un link per ritornare sul sito degli acquisti per Dolcericordo; sar&agrave; necessario seguirlo per completare correttamente la procedura di pagamento.</em></small>'
         dajax.assign('#elenco','innerHTML',out)
     return dajax.json()
+
