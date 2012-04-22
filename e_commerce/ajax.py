@@ -400,7 +400,7 @@ def paga(request, full_name, city, address, cap, email, phone):
         out += "<br/>"
         out += '<table id="paypal-button"><tr><td align="center">'
         out += '<form action="%s" method="post">' % settings.PAYPAL_URL
-        out += '<input type="hidden" name="amount" value="%s">' % totcost
+        out += '<input type="hidden" name="amount" value="%s">' % round(totcost, 2)
         out += '<input type="hidden" name="cmd" value="_xclick">'
         out += '<input type="hidden" name="business" value="%s">' % settings.PAYPAL_EMAIL
         out += '<input type="hidden" name="item_name" value="Bonifico per acquisto su Dolcericordo utente %s">' % full_name

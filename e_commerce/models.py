@@ -7,6 +7,8 @@ import logging, re, urllib, os, shutil
 from django.conf import settings
 from settings import *
 from PIL import Image
+from django.core.mail import EmailMessage
+from django.contrib.sites.models import Site
 
 TAG_RE = re.compile('[^a-z0-9\-_\+\:\.]?', re.I)
 TINY_SIZE = (80,80)    #thumb size (x,y)
@@ -151,11 +153,20 @@ class Cart(models.Model):
                     logging.error("Deleted CartObj %s", x)
                 self.payed = False
                 self.save()
+                notify_admin_via_mail(self.id)
 	    else:
                 logging.error("Not Checked Payed")
             return vat
         except Exception, e:
             logging.error("Exc in saving Cart %s", e)
+
+def notify_admin_via_mail(idfinal):
+    txt = "%s/admin/e_commerce/finalcartpayed/%s" % (Site.objects.get_current(), idfinal)
+    logging.error(txt)
+    mailto = getattr(settings, 'PAYPAL_EMAIL', 'attuch@gmail.com')
+    EmailMessage('Nuovo Acquisto Utente', txt,
+                 'info-acquisti@dolcericordo.it', 
+                 [mailto]).send()
 
 class PurchaseCart(models.Model):
     cart = models.ForeignKey(Cart)
