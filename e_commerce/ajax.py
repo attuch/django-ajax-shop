@@ -352,7 +352,18 @@ def rimuovi(request, objid):
     cart.delete()
     return acquista(request)
 
-
+@dajaxice_register
+def info(request):
+    dajax = Dajax()
+    try:
+        out = "<p align='justify' id='cart-contents'>" + Info.objects.get(id=1).info + "</p>"
+    except Exception, e:
+	logging.error("Exc in Info %s", e)
+	out = "<p align='center' id='cart-contents'>Nessuna informazione presente</p>"
+    dajax.assign('#elenco','innerHTML',out)
+    return dajax.json()
+    
+	
 from django.core.validators import email_re
 
 def is_valid_email(email):

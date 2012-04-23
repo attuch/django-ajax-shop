@@ -203,6 +203,17 @@ class Shipping(models.Model):
     def __unicode__(self):
         return str(self.shipping_value)
 
+class Info(models.Model):
+    info = models.TextField(max_length=1000, help_text=_('Can use html markup'))
+
+    class Meta:
+        ordering = ["info"]
+        verbose_name = 'Info'
+        verbose_name_plural = 'Info'
+
+    def __unicode__(self):
+        return str(self.info)
+
 class Discount(models.Model):
     discount = models.FloatField(max_length=100, help_text=_('This percentage to be applied to products or to tag'))
     product = models.ForeignKey(Product, blank=True, null=True)
