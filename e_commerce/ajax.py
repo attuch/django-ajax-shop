@@ -306,11 +306,18 @@ def acquista(request):
         out += "<br/>"
         try:
  	    iva = IVA.objects.all()[0].iva_value
-            totcost_iva = totcost + totcost*float(iva)/100
-            out += "<p align='center' id='cart-contents'>Totale + Iva (%s%s) %s &euro;</p>" % (iva,'%',totcost_iva)
+            totcost += totcost*float(iva)/100
+            out += "<p align='center' id='cart-contents'>Totale + Iva (%s%s) %s &euro;</p>" % (iva,'%',totcost)
             out += "<br/>"
         except Exception, e:
 	    logging.error("No iva_value found %s", e)
+        try:
+	    shipping = Shipping.objects.all()[0].shipping_value
+            totcost_shipping = totcost + float(shipping)
+            out += "<p align='center' id='cart-contents'>Totale + Spese Spedizione (%s &euro;) %s &euro;</p>" % (shipping,totcost_shipping)
+            out += "<br/>"
+        except Exception, e:
+	    logging.error("No shipping_value found %s", e)
         out += "<br/>"
         out += "<div id='errori-form'></div>"
         out += "<table>"
@@ -396,6 +403,11 @@ def paga(request, full_name, city, address, cap, email, phone):
             totcost += totcost*float(iva)/100
         except Exception, e:
             logging.error("No iva_value found in pay %s", e)
+	try:
+	    shipping = Shipping.objects.all()[0].shipping_value
+            totcost += float(shipping)
+        except Exception, e:
+            logging.error("No shipping_value found in pay %s", e)
         out = "<p align='center' id='cart-contents'>Clicca sul link sottostante</p>"
         out += "<br/>"
         out += '<table id="paypal-button"><tr><td align="center">'

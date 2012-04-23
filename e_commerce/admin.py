@@ -20,6 +20,10 @@ class IvaAdmin(admin.ModelAdmin):
     list_display = ('id', 'iva_value')
     list_editable = ('iva_value',)
 
+class ShippingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'shipping_value')
+    list_editable = ('shipping_value',)
+
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'article_count')
 
@@ -66,6 +70,7 @@ admin.site.register(Cart, CartAdmin)
 admin.site.register(CartObj, CartObjAdmin)
 admin.site.register(Discount, DiscountAdmin)
 admin.site.register(IVA, IvaAdmin)
+admin.site.register(Shipping, ShippingAdmin)
 admin.site.register(FinalCartPayed, FinalCartPayedAdmin)
 
 

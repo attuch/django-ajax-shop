@@ -192,6 +192,17 @@ class IVA(models.Model):
     def __unicode__(self):
         return str(self.iva_value)
 
+class Shipping(models.Model):
+    shipping_value = models.FloatField(max_length=100, help_text=_('This value will be added to total'))
+
+    class Meta:
+        ordering = ["shipping_value"]
+        verbose_name = 'Shipping'
+        verbose_name_plural = 'Shipping'
+
+    def __unicode__(self):
+        return str(self.shipping_value)
+
 class Discount(models.Model):
     discount = models.FloatField(max_length=100, help_text=_('This percentage to be applied to products or to tag'))
     product = models.ForeignKey(Product, blank=True, null=True)
