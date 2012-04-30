@@ -98,7 +98,8 @@ function allarga(val) {
 {% endblock %}
 
 {% block content %}
-<div style="margin:auto;" id="navigazione"><marquee direction="left" scrollamount="4" onmouseover="this.setAttribute('scrollamount', 1, 0);" onmouseout="this.setAttribute('scrollamount', 4, 0);"><p class="category-but"><a href="/">Primo Piano</a>&nbsp;&nbsp;&nbsp;&nbsp;---&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:onsale();">Pezzi Scontati</a>&nbsp;&nbsp;&nbsp;&nbsp;---&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:info();">Maggiori Informazioni</a></p></marquee></div>
+{#<div style="margin:auto;" id="navigazione"><marquee direction="left" scrollamount="4" onmouseover="this.setAttribute('scrollamount', 1, 0);" onmouseout="this.setAttribute('scrollamount', 4, 0);"><p class="category-but"><a href="/">Primo Piano</a>&nbsp;&nbsp;&nbsp;&nbsp;---&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:onsale();">Pezzi Scontati</a>&nbsp;&nbsp;&nbsp;&nbsp;---&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:info();">Maggiori Informazioni</a></p></marquee></div>#}
+<div style="margin:auto;" id="navigazione"><p class="category-but"><a href="/">.primo piano</a>&nbsp;&nbsp;<a href="javascript:onsale();">.pezzi scontati</a>&nbsp;&nbsp;<a href="javascript:info();">.condizioni di vendita</a></p></div>
 <div style="margin:auto;" id="titolo"></div>
 <br/>
 <table width="100%">
