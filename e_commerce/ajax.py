@@ -3,6 +3,7 @@
 from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
 from django.conf import settings
+from django.utils import timezone
 import logging, os, re
 from django.contrib.sites.models import Site
 import datetime
@@ -236,7 +237,7 @@ def addcart(request, obj, num):
 @dajaxice_register
 def clearoldcart(request):
     dajax = Dajax()
-    logging.error("IN CLEAR OLD CART datenow %s" % datetime.now())
+    logging.error("IN CLEAR OLD CART datenow %s" % datetime.now(timezone.get_default_timezone()))
     for i in CartObj.objects.all():
         try:
             payed = Cart.objects.get(product=i, session=i.session).payed
@@ -245,14 +246,14 @@ def clearoldcart(request):
             logging.error(e)
             payed = False
         #logging.error("CARTOBJ PAYED %s %s", i, payed)
-        if i.session.expire_date < datetime.now():
+        if i.session.expire_date < datetime.now(timezone.get_default_timezone()):
             if not payed:
                 logging.error("Deleting CartObj %s for expiration time and payed %s" % (i,payed))
                 i.delete()
             else:
                 logging.error("Not deleting CartObj %s because payed", i)
     for i in Cart.objects.all():
-        if i.session.expire_date < datetime.now():
+        if i.session.expire_date < datetime.now(timezone.get_default_timezone()):
             if not i.payed:
                 logging.error("Deleting Cart %s for expiration time and payed %s" % (i,i.payed))
                 i.delete()
