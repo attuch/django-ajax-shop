@@ -13,7 +13,7 @@ import locale
 locale.setlocale(locale.LC_ALL, ('it_IT', 'UTF-8'))
 
 var = "'%s'"
-LISTRESULTS = '<tr><td><a href="#show" onclick="allarga(%s)"><img src="%s" width="200px" /></a></td><td id="descrprod"><p id="cart-contents">%s</p><small id="cart-contents">%s</small></p>' % (var,'%s','%s','%s')
+LISTRESULTS = '<tr><td><a href="#show" onclick="allarga(%s)"><img src="%s" width="200px" alt="%s" title="%s" /></a></td><td id="descrprod"><p id="cart-contents">%s</p><small id="cart-contents">%s</small></p>' % (var,'%s','%s','%s','%s','%s')
 
 def creaselect(name,number,date,addcart):
     if date <= date.today():
@@ -44,7 +44,7 @@ def primopiano(request):
             #logging.error("FIN %s" % valore_prezzo)
         except:
             valore_prezzo = "<em>EUR %s</em>" % (str(i.price))
-        out += str(LISTRESULTS) % (i.image.url, i.image.url, i.description, valore_prezzo)
+        out += str(LISTRESULTS) % (i.image.url, i.image.url, i.name, i.name, i.description, valore_prezzo)
         out += creaselect(i.name,i.number,i.date_disponibility,var)
         out += '</td></tr>'
     out += '</table>'
@@ -91,7 +91,7 @@ def filtercat(request, option):
                     #logging.error("FIN %s" % valore_prezzo)
                 except:
                     valore_prezzo = "<em>EUR %s</em>" % (str(i.price))
-                out += str(LISTRESULTS) % (i.image.url, i.image.url, i.description, valore_prezzo)
+                out += str(LISTRESULTS) % (i.image.url, i.image.url, i.name, i.name, i.description, valore_prezzo)
                 out += creaselect(i.name,i.number,i.date_disponibility,var)
 		out += '</td></tr>'
             out += '</table>'
@@ -124,7 +124,7 @@ def onsale(request):
                     #logging.error("FIN %s" % valore_prezzo)
                 except:
                     valore_prezzo = "<em>EUR %s</em>" % (str(i.product.price))
-                out += str(LISTRESULTS) % (i.product.image.url, i.product.image.url, i.product.description, valore_prezzo)
+                out += str(LISTRESULTS) % (i.product.image.url, i.product.image.url, i.product.name, i.product.name, i.product.description, valore_prezzo)
                 out += creaselect(i.product.name,i.product.number,i.product.date_disponibility,var)
                 out += '</td></tr>'
             out += '</table>'
