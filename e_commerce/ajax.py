@@ -3,7 +3,6 @@
 from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
 from django.conf import settings
-from django.utils import timezone
 import logging, os, re
 from django.contrib.sites.models import Site
 import datetime
@@ -67,7 +66,7 @@ def productcategories(request):
         if num > 7: num = 7
         #logging.error(num)
         #logging.error(i)
-        out += '<span class="category tag%s" onclick="javascript:categoryfilter(%s);">%s</span>&nbsp;&nbsp;' % (str(num), var, i.name)
+        out += '<span class="category tag%s" onclick="javascript:categoryfilter(%s);" title="%s">%s</span>&nbsp;&nbsp;' % (str(num), var, i.name, i.name)
     dajax.assign('#productcategories','innerHTML',out)
     return dajax.json()
 
@@ -237,7 +236,7 @@ def addcart(request, obj, num):
 @dajaxice_register
 def clearoldcart(request):
     dajax = Dajax()
-    logging.error("IN CLEAR OLD CART datenow %s" % datetime.now(timezone.get_default_timezone()))
+    logging.error("IN CLEAR OLD CART datenow %s" % datetime.now())
     for i in CartObj.objects.all():
         try:
             payed = Cart.objects.get(product=i, session=i.session).payed
@@ -246,14 +245,14 @@ def clearoldcart(request):
             logging.error(e)
             payed = False
         #logging.error("CARTOBJ PAYED %s %s", i, payed)
-        if i.session.expire_date < datetime.now(timezone.get_default_timezone()):
+        if i.session.expire_date < datetime.now():
             if not payed:
                 logging.error("Deleting CartObj %s for expiration time and payed %s" % (i,payed))
                 i.delete()
             else:
                 logging.error("Not deleting CartObj %s because payed", i)
     for i in Cart.objects.all():
-        if i.session.expire_date < datetime.now(timezone.get_default_timezone()):
+        if i.session.expire_date < datetime.now():
             if not i.payed:
                 logging.error("Deleting Cart %s for expiration time and payed %s" % (i,i.payed))
                 i.delete()
